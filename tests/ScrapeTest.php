@@ -3,6 +3,7 @@
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 use App\Guzzle;
+use App\Item;
 
 class ScrapeTest extends TestCase
 {
@@ -11,10 +12,20 @@ class ScrapeTest extends TestCase
      *
      * @return void
      */
-    public function testScraping()
+    public function testTitles()
     {
-        $endpoint = 'http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/5_products.html';
-        $client = Guzzle::connect($endpoint);
-        $this->assertObjectHasAttribute('config', $client);
+        $titles = Item::getTitles();
+        $this->assertGreaterThan(0, count($titles));
+    }
+
+     /**
+     * A test to get the links to each product
+     *
+     * @return void
+     */
+    public function testURLs()
+    {
+        $links = Item::getLinks();
+        $this->assertGreaterThan(0, count($links));
     }
 }
