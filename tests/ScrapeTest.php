@@ -95,5 +95,13 @@ class ScrapeTest extends TestCase
     public function testModel()
     {
         $items = Item::get();
+
+        foreach ($items as $item) {
+            $results = [
+                'title' => $item
+            ];
+        }
+
+        var_dump($results);
     }
 }
