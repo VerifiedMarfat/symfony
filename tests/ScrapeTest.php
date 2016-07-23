@@ -88,20 +88,37 @@ class ScrapeTest extends TestCase
     }
 
     /**
-     * A test to get the complete item model
+     * A test to get the all the items
      *
      * @return void
      */
-    public function testModel()
+    public function testItems()
+    {
+        $items = Item::getItems();
+        $this->assertEquals(7, count($items));
+    }
+
+    /**
+     * A test to get the total amount
+     *
+     * @return void
+     */
+    public function testTotal()
+    {
+        $total = Item::getTotal();
+        $this->assertEquals(9.60, $total);
+    }
+
+    /**
+     * A test to get the completed item array
+     *
+     * @return void
+     */
+    public function testRequest()
     {
         $items = Item::get();
-
-        foreach ($items as $item) {
-            $results = [
-                'title' => $item
-            ];
-        }
-
-        var_dump($results);
+        // TODO :: write more detailed tests to check whether the data returned is correct.
+        $this->assertEquals(8, count($items));
     }
+
 }

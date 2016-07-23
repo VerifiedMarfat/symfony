@@ -125,9 +125,57 @@ class Item extends Model
      * Constructs the items based on the extracted data
      * @return array
      */
+    public static function getItems()
+    {
+        $results = [];
+        foreach (self::getTitles() as $item) {
+            $results[]['title'] = $item;
+        }
+
+        $i = 0;
+        foreach (self::getSizes() as $item) {
+            $results[$i]['size'] = $item;
+            $i++;
+        }
+
+        $i = 0;
+        foreach (self::getPrices() as $item) {
+            $results[$i]['unit_price'] = $item;
+            $i++;
+        }
+
+        $i = 0;
+        foreach (self::getDescriptions() as $item) {
+            $results[$i]['description'] = $item;
+            $i++;
+        }
+
+        return $results;
+    }
+
+    /**
+     * Calculates the total price baed on unit prices of all items
+     * @return array
+     */
+    public static function getTotal()
+    {
+        $total = 0;
+        foreach (self::getPrices() as $item) {
+            $total += $item;
+        }
+
+        return round($total, 2);
+    }
+
+    /**
+     * Creates the finalised items array.
+     * @return array
+     */
     public static function get()
     {
-        $titles = self::getTitles();
-        // var_dump($titles);
+        $items = self::getItems();
+        $items['total'] = self::getTotal();
+
+        return $items;
     }
 }
