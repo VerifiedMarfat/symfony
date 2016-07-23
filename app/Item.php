@@ -8,6 +8,12 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class Item extends Model
 {
+    /**
+     * The endpoint of the landing page.
+     *
+     * @var string
+     */
+    private static $homepage = 'http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/5_products.html';
 
     /**
      * The attributes that are mass assignable.
@@ -22,10 +28,13 @@ class Item extends Model
      * Reads the html page.
      * @return object
      */
-    private static function connect()
+    private static function connect($url = false)
     {
-        $homepage = 'http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/5_products.html';
-        $body = file_get_contents($homepage);
+        if (!$url) {
+            $url = self::$homepage;
+        }
+
+        $body = file_get_contents($url);
         $crawler = new Crawler($body);
 
         return $crawler;
@@ -57,5 +66,40 @@ class Item extends Model
         });
 
         return $links;
+    }
+
+    /**
+     * Extracts the price of each product
+     * @return array
+     */
+    public static function getPrices()
+    {
+        $crawler = self::connect();
+        $prices = $crawler->filter('p.pricePerMeasure')->each(function (Crawler $node, $i) {
+            $price = str_replace('&pound', '', $node->text());
+            $price = str_replace('/ea', '', $price);
+
+            return (float) $price;
+        });
+
+        return $prices;
+    }
+
+    /**
+     * Extracts the description of each product
+     * @return array
+     */
+    public static function getDescriptions()
+    {
+        $links = self::getLinks();
+        $copy = [];
+
+        foreach ($links as $link) {
+            $crawler = self::connect($link);
+            $content = $crawler->filter('#information .productText')->first()->text();
+            $copy[] = trim($content);
+        }
+
+        return $copy;
     }
 }
