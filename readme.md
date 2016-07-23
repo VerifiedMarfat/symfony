@@ -1,10 +1,8 @@
-# Scraping fresh fruits
+# Scraping together some fresh fruits
 
 ## Requirements
-1. Composer
+1. Composer v1.1.3
 
 ## Setup
 1. `make init`
 2. `make run`
-3. TODO :: continue writing instructions..
-4. 
