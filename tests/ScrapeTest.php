@@ -14,7 +14,13 @@ class ScrapeTest extends TestCase
     public function testTitles()
     {
         $titles = Item::getTitles();
-        $this->assertGreaterThan(0, count($titles));
+        $this->assertContains('Sainsbury\'s Apricot Ripe & Ready x5', $titles);
+        $this->assertContains('Sainsbury\'s Avocado Ripe & Ready XL Loose 300g', $titles);
+        $this->assertContains('Sainsbury\'s Avocado, Ripe & Ready x2', $titles);
+        $this->assertContains('Sainsbury\'s Avocados, Ripe & Ready x4', $titles);
+        $this->assertContains('Sainsbury\'s Conference Pears, Ripe & Ready x4 (minimum)', $titles);
+        $this->assertContains('Sainsbury\'s Golden Kiwi x4', $titles);
+        $this->assertContains('Sainsbury\'s Kiwi Fruit, Ripe & Ready x4', $titles);
     }
 
      /**
@@ -25,7 +31,13 @@ class ScrapeTest extends TestCase
     public function testURLs()
     {
         $links = Item::getLinks();
-        $this->assertGreaterThan(0, count($links));
+        $this->assertContains('http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/sainsburys-apricot-ripe---ready-320g.html', $links);
+        $this->assertContains('http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/sainsburys-avocado-xl-pinkerton-loose-300g.html', $links);
+        $this->assertContains('http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/sainsburys-avocado--ripe---ready-x2.html', $links);
+        $this->assertContains('http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/sainsburys-avocados--ripe---ready-x4.html', $links);
+        $this->assertContains('http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/sainsburys-conference-pears--ripe---ready-x4-%28minimum%29.html', $links);
+        $this->assertContains('http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/sainsburys-golden-kiwi--taste-the-difference-x4-685641-p-44.html', $links);
+        $this->assertContains('http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/sainsburys-kiwi-fruit--ripe---ready-x4.html', $links);
     }
 
     /**
@@ -36,11 +48,16 @@ class ScrapeTest extends TestCase
     public function testPrices()
     {
         $prices = Item::getPrices();
-        $this->assertGreaterThan(0, count($prices));
+        $this->assertContains(0.70, $prices);
+        $this->assertContains(1.50, $prices);
+        $this->assertContains(3.20, $prices);
+        $this->assertContains(1.50, $prices);
+        $this->assertContains(0.45, $prices);
+        $this->assertContains(0.45, $prices);
     }
 
     /**
-     * A test to get the size of each product
+     * A test to get the description of each product
      *
      * @return void
      */
@@ -51,5 +68,32 @@ class ScrapeTest extends TestCase
         $this->assertContains('Avocados', $descriptions);
         $this->assertContains('Conference', $descriptions);
         $this->assertContains('Kiwi', $descriptions);
+    }
+
+    /**
+     * A test to get the size of each product page
+     *
+     * @return void
+     */
+    public function testSize()
+    {
+        $sizes = Item::getSizes();
+        $this->assertContains('38.27kb', $sizes);
+        $this->assertContains('38.67kb', $sizes);
+        $this->assertContains('43.44kb', $sizes);
+        $this->assertContains('38.68kb', $sizes);
+        $this->assertContains('38.54kb', $sizes);
+        $this->assertContains('38.56kb', $sizes);
+        $this->assertContains('38.98kb', $sizes);
+    }
+
+    /**
+     * A test to get the complete item model
+     *
+     * @return void
+     */
+    public function testModel()
+    {
+        $items = Item::get();
     }
 }

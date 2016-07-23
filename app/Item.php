@@ -48,7 +48,7 @@ class Item extends Model
     {
         $crawler = self::connect();
         $titles = $crawler->filter('h3 > a')->each(function (Crawler $node, $i) {
-            return $node->text();
+            return trim($node->text());
         });
 
         return $titles;
@@ -101,5 +101,33 @@ class Item extends Model
         }
 
         return $copy;
+    }
+
+    /**
+     * Extracts the page details page and retrieves its size in KB
+     * @return array
+     */
+    public static function getSizes()
+    {
+        $links = self::getLinks();
+        $sizes = [];
+
+        foreach ($links as $link) {
+            $headers = get_headers($link, 1);
+            $bytes = $headers['Content-Length'];
+            $sizes[] = $size = round($bytes / 1024, 2) .'kb';
+        }
+
+        return $sizes;
+    }
+
+    /**
+     * Constructs the items based on the extracted data
+     * @return array
+     */
+    public static function get()
+    {
+        $titles = self::getTitles();
+        // var_dump($titles);
     }
 }
