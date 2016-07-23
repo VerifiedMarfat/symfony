@@ -117,6 +117,7 @@ class ScrapeTest extends TestCase
     public function testRequest()
     {
         $items = Item::get();
+        var_dump($items);
         // TODO :: write more detailed tests to check whether the data returned is correct.
         $this->assertEquals(8, count($items));
     }
